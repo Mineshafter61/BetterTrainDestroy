@@ -1,0 +1,6 @@
+name: BetterTrainDestroy
+version: ${project.version}
+main: mikeshafter.bettertraindestroy.BetterTrainDestroy
+api-version: 1.16
+authors: [ mikeshafter ]
+description: FIGHT ME UNDERSCORE 11
