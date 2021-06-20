@@ -4,3 +4,19 @@ main: mikeshafter.bettertraindestroy.BetterTrainDestroy
 api-version: 1.16
 authors: [ mikeshafter ]
 description: FIGHT ME UNDERSCORE 11
+
+commands:
+  TrainDestroyDelay:
+    description: Delays TrainDestroy
+    permission: TrainDestroy.delay
+    usage: /<command>
+
+  reload:
+    description: Reloads config
+    permission: TrainDestroy.delay
+    usage: /<command>
+
+permissions:
+  TrainDestroy.delay:
+    default: op
+    description: Permission for /TrainDestroyDelay
