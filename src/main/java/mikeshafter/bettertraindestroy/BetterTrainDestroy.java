@@ -17,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class BetterTrainDestroy extends JavaPlugin implements CommandExecutor {
   
   boolean destroy;
-  final long fullWarningDelay = getConfig().getLong("destroy")-getConfig().getLong("warning")/20;
+  final long fullWarningDelay = (getConfig().getLong("destroy") - getConfig().getLong("warning")) / 20;
   long warningDelay;
   BossBar bossBar;
   
@@ -30,13 +30,14 @@ public final class BetterTrainDestroy extends JavaPlugin implements CommandExecu
     
     // TODO: destroy
     destroy = true;
-    warningDelay = (getConfig().getLong("destroy") - getConfig().getLong("warning")) / 20;
     
     // 3 min warning
     Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
+      warningDelay = (getConfig().getLong("destroy") - getConfig().getLong("warning")) / 20;
       Bukkit.broadcastMessage(String.format("§b[§aTrainDestroy§b] §fTrains will be destroyed in %s seconds!", warningDelay ));
       Bukkit.broadcastMessage("§b[§aTrainDestroy§b] §fIf you are currently riding a train, please get off at the next stop.");
-      bossBar = Bukkit.createBossBar(String.format("§fTrains will be destroyed in %s seconds!", warningDelay), BarColor.BLUE, BarStyle.SOLID, BarFlag.DARKEN_SKY);
+      bossBar = Bukkit.createBossBar(String.format("§fTrains will be destroyed in %s seconds!", warningDelay), BarColor.BLUE, BarStyle.SOLID, BarFlag.CREATE_FOG);
+      bossBar.removeFlag(BarFlag.CREATE_FOG);
       for (Player player : Bukkit.getOnlinePlayers()) {
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, 1.5f);
         bossBar.addPlayer(player);
@@ -59,12 +60,12 @@ public final class BetterTrainDestroy extends JavaPlugin implements CommandExecu
     
     // Destroyer
     Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
+      for (Player player : Bukkit.getOnlinePlayers()) bossBar.removePlayer(player);
       if (destroy){
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         Bukkit.broadcastMessage("§b[§aTrainDestroy§b] §fTrains have been destroyed!");
         Bukkit.dispatchCommand(console, "train destroyall");
         Bukkit.dispatchCommand(console, "ekillall minecarts world");
-        warningDelay = (getConfig().getLong("destroy") - getConfig().getLong("warning")) / 20;
       } else {
         destroy = true;
         Bukkit.broadcastMessage("§b[§aTrainDestroy§b] §fTrainDestroy rescheduled, trains will be destroyed in the next cycle.");
@@ -92,6 +93,4 @@ public final class BetterTrainDestroy extends JavaPlugin implements CommandExecu
     // Plugin shutdown logic
     getServer().getConsoleSender().sendMessage("§cTrainDestroy§4 by Mineshafter61: Thank you for using!");
   }
-  
-
 }
