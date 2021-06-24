@@ -16,6 +16,10 @@ commands:
     permission: TrainDestroy.delay
     usage: /<command>
 
+  odometer:
+    description: Records minecart distances.
+    usage: /<command> <start|record|stop>
+
 permissions:
   TrainDestroy.delay:
     default: op
